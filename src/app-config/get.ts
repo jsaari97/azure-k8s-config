@@ -4,7 +4,7 @@ interface KeyVaultRef {
   uri: string;
 }
 
-export const fetchValue = async (key: string): Promise<string> => {
+export const getValue = async (key: string): Promise<string> => {
   try {
     const { value } = await appClient.getConfigurationSetting({
       key,
