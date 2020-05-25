@@ -21,6 +21,6 @@ export const parseConfig = async (
       data,
     };
   } catch (e) {
-    return Promise.reject();
+    return Promise.reject(e);
   }
 };
