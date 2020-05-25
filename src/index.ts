@@ -9,7 +9,8 @@ export interface GenerateOptions {
 const main = async (opts: GenerateOptions) => {
   try {
     const configs = await loadConfigurations(opts.input);
-    await Promise.all(configs.map(parseConfig));
+    const parsedConfigs = await Promise.all(configs.map(parseConfig));
+    console.log(parsedConfigs);
   } catch (e) {
     console.log(e);
   }

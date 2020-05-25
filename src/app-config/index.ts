@@ -1,16 +1,26 @@
 import { SecretConfig } from "../types";
 import { getValue } from "./get";
+import { fromPairs } from "lodash";
 
-export const parseConfig = async (config: SecretConfig) => {
+export const parseConfig = async (
+  config: SecretConfig
+): Promise<SecretConfig> => {
   try {
-  const clone: SecretConfig = JSON.parse(JSON.stringify(config));
+    const dataTuples = await Promise.all(
+      Object.entries(config.data).map(async ([key, value]) => {
+        const raw = await getValue(value);
+        const encoded = Buffer.from(raw).toString("base64");
+        return [key, encoded];
+      })
+    );
 
-  const data = await Promise.all(
-    Object.entries(clone.data).map(([key, value]) => getValue(value))
-  );
+    const data: SecretConfig["data"] = fromPairs(dataTuples);
 
-  console.log(data)
+    return {
+      ...config,
+      data,
+    };
   } catch (e) {
-    return Promise.reject()
+    return Promise.reject();
   }
 };
