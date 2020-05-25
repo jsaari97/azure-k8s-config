@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
-import Yaml from "js-yaml";
 import { SecretConfig } from "../types";
+import { fromYaml } from "../utils/yaml";
 
 const concatPath = (p: string) => (dir: string) => path.join(p, dir);
 
@@ -33,12 +33,20 @@ const walker = async (dir: string): Promise<string[]> => {
 
 const readFile = (p: string) => fs.readFile(p, "utf8");
 
-const parseYaml = (data: string) => Yaml.safeLoad(data) as SecretConfig;
+export const loadConfigurations = async (
+  inputPath: string
+): Promise<[string, SecretConfig][]> => {
+  const fullInputPath = path.resolve(process.cwd(), inputPath);
+  const paths = await walker(fullInputPath);
+  const configs = await Promise.all(
+    paths.map(
+      async (pathName): Promise<[string, SecretConfig]> => {
+        const data = await readFile(pathName);
 
-export const loadConfigurations = async (inputPath: string): Promise<SecretConfig[]> => {
-  const paths = await walker(path.resolve(process.cwd(), inputPath));
-  const data = await Promise.all(paths.map(readFile));
-  const configs = data.map(parseYaml);
+        return [pathName.substr(fullInputPath.length), fromYaml(data)];
+      }
+    )
+  );
 
   return configs;
 };
