@@ -8,9 +8,9 @@ export interface GenerateOptions {
   output: string;
 }
 
-const main = async (opts: GenerateOptions) => {
+export default async (options: GenerateOptions) => {
   try {
-    const configs = await loadConfigurations(opts.input);
+    const configs = await loadConfigurations(options.input);
     const parsed = await Promise.all(
       configs.map(
         async ([pathName, config]): Promise<[string, SecretConfig]> => {
@@ -19,10 +19,8 @@ const main = async (opts: GenerateOptions) => {
         }
       )
     );
-    await saveConfigurations(opts.output, parsed);
+    await saveConfigurations(options.output, parsed);
   } catch (e) {
     console.log(e);
   }
 };
-
-main({ input: "./configs", output: "./outputs" });

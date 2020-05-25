@@ -5,7 +5,7 @@
   "author": "Jim Saari",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node src/index.ts"
+    "build": "tsc"
   },
   "dependencies": {
     "@azure/app-configuration": "^1.0.1",
