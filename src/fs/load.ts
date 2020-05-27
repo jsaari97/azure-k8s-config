@@ -14,7 +14,9 @@ const sortDirFiles = async (
   const stat = await fs.lstat(cur);
   if (stat.isDirectory()) {
     return [[...acc[0], cur], acc[1]];
-  } else if (cur.match(/\.ya?ml$/)) {
+  }
+
+  if (cur.match(/\.ya?ml$/)) {
     return [acc[0], [...acc[1], cur]];
   }
 

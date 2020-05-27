@@ -1,6 +1,6 @@
 import { Command, flags } from "@oclif/command";
 import cli from "cli-ux";
-import generate from "../";
+import generate from "..";
 
 class AzureAppConfigK8sCommand extends Command {
   static description =

@@ -20,7 +20,7 @@ export const getValue = async (
     }
 
     // Check if key value is an Key Vault reference
-    if (!value.match(/^\{\"uri\":/)) {
+    if (!value.match(/^\{"uri":/)) {
       return Promise.resolve(value);
     }
 
@@ -37,7 +37,7 @@ export const getValue = async (
     }
 
     return Promise.resolve(secret.value);
-  } catch (e) {
-    return Promise.reject(e);
+  } catch (error) {
+    return Promise.reject(error);
   }
 };

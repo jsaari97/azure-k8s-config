@@ -6,11 +6,11 @@ require("dotenv").config();
 
 // Validate environment variables
 if (!process.env.AZURE_KEYVAULT_NAME) {
-  throw new Error('AZURE_KEYVAULT_NAME env variable missing!')
+  throw new Error("AZURE_KEYVAULT_NAME env variable missing!");
 }
 
 if (!process.env.AZURE_APP_CONFIG_NAME) {
-  throw new Error('AZURE_APP_CONFIG_NAME env variable missing!')
+  throw new Error("AZURE_APP_CONFIG_NAME env variable missing!");
 }
 
 // Setup Azure Credentials

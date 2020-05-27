@@ -20,7 +20,7 @@ export const parseConfig = async (
       ...config,
       data,
     };
-  } catch (e) {
-    return Promise.reject(e);
+  } catch (error) {
+    return Promise.reject(error);
   }
 };

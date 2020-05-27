@@ -20,7 +20,7 @@ export default async (options: GenerateOptions) => {
       )
     );
     await saveConfigurations(options.output, parsed);
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    return Promise.reject(error);
   }
 };

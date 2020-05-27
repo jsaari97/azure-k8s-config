@@ -7,8 +7,8 @@ const makeDir = async (pathName: string): Promise<void> => {
   try {
     const dir = pathName.substring(0, pathName.lastIndexOf("/"));
     await fs.mkdir(dir, { recursive: true });
-  } catch (e) {
-    Promise.reject(e);
+  } catch (error) {
+    Promise.reject(error);
   }
 };
 
@@ -17,8 +17,8 @@ const save = async (pathName: string, config: SecretConfig): Promise<void> => {
     await makeDir(pathName);
     const data = toYaml(config);
     await fs.writeFile(pathName, data, "utf8");
-  } catch (e) {
-    Promise.reject(e);
+  } catch (error) {
+    Promise.reject(error);
   }
 };
 
@@ -29,7 +29,7 @@ export const saveConfigurations = async (
   await Promise.all(
     configs.map(async ([pathName, config]) => {
       const fullPath = path.join(process.cwd(), outputPath, pathName);
-      console.log(fullPath);
+
       await save(fullPath, config);
     })
   );
