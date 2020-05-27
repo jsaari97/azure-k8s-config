@@ -1,8 +1,10 @@
 import { Command, flags } from "@oclif/command";
+import cli from "cli-ux";
 import generate from "../";
 
 class AzureAppConfigK8sCommand extends Command {
-  static description = "Generate Kubernetes Secrets from Azure App Configuration and Key Vault keys";
+  static description =
+    "Generate Kubernetes Secrets from Azure App Configuration and Key Vault keys";
 
   static flags = {
     version: flags.version({ char: "v" }),
@@ -17,20 +19,14 @@ class AzureAppConfigK8sCommand extends Command {
   async run() {
     const { args } = this.parse(AzureAppConfigK8sCommand);
 
-    if (!args.input) {
-      this.error("Input argument is missing");
-    }
-
-    if (!args.output) {
-      this.error("Output argument is missing");
-    }
+    cli.action.start("Generating k8s secrets");
 
     await generate({
       input: args.input,
       output: args.output,
     });
 
-    this.log('Sucessfully generated k8s secrets!')
+    cli.action.stop();
   }
 }
 
