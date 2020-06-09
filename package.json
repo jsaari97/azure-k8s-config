@@ -6,7 +6,7 @@
   "bin": {
     "azure-k8s-config": "./bin/run"
   },
-  "bugs": "https://github.com/jsaari97/azure-app-config-k8s-secret/issues",
+  "bugs": "https://github.com/jsaari97/azure-k8s-config/issues",
   "dependencies": {
     "@azure/app-configuration": "^1.0.1",
     "@azure/identity": "^1.0.2",
@@ -41,13 +41,13 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/jsaari97/azure-app-config-k8s-secret",
+  "homepage": "https://github.com/jsaari97/azure-k8s-config",
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
     "bin": "azure-k8s-config"
   },
-  "repository": "jsaari97/azure-app-config-k8s-secret",
+  "repository": "jsaari97/azure-k8s-config",
   "scripts": {
     "build": "tsc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
