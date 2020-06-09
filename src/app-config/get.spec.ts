@@ -6,4 +6,6 @@ describe("Azure: Get Value", () => {
 
     expect(value).toEqual("my-value");
   });
+
+  it.todo("should return secret value");
 });
