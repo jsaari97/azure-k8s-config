@@ -14,12 +14,12 @@ There are two ways to use this library, either programmatically or using the CLI
 ### CLI
 
 ```bash
-$ azure-app-config-k8s <input-dir> <output-dir>
+$ azure-k8s-config <input-dir> <output-dir>
 ```
 
 ### Programmatically
 ```js
-const generateSecrets = require('azure-app-config-k8s-secret');
+const generateSecrets = require('azure-k8s-config');
 
 generateSecrets({
 	input: '<input-dir>',

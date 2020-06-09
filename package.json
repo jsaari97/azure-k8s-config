@@ -1,10 +1,10 @@
 {
-  "name": "azure-app-config-k8s-secret",
+  "name": "azure-k8s-config",
   "description": "Generate Kubernetes Secrets from Azure App Configuration and Key Vault keys.",
   "version": "0.1.0",
   "author": "Jim Saari",
   "bin": {
-    "azure-app-config-k8s": "./bin/run"
+    "azure-k8s-config": "./bin/run"
   },
   "bugs": "https://github.com/jsaari97/azure-app-config-k8s-secret/issues",
   "dependencies": {
@@ -45,7 +45,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
-    "bin": "azure-app-config-k8s"
+    "bin": "azure-k8s-config"
   },
   "repository": "jsaari97/azure-app-config-k8s-secret",
   "scripts": {
