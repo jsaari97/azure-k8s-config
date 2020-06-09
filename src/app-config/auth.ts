@@ -2,7 +2,9 @@ import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
 import { AppConfigurationClient } from "@azure/app-configuration";
 
-require("dotenv").config();
+if (process.env.NODE_ENV !== "test") {
+  require("dotenv").config();
+}
 
 // Validate environment variables
 if (!process.env.AZURE_KEYVAULT_NAME) {
