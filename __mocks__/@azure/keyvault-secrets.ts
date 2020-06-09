@@ -1,5 +1,7 @@
 export class SecretClient {
   getSecret() {
-    return "my-secret";
+    return {
+      value: "my-secret-value",
+    };
   }
 }

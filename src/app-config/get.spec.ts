@@ -7,5 +7,9 @@ describe("Azure: Get Value", () => {
     expect(value).toEqual("my-value");
   });
 
-  it.todo("should return secret value");
+  it("should return secret value", async () => {
+    const value = await getValue("my-secret-key");
+
+    expect(value).toEqual("my-secret-value");
+  });
 });
