@@ -3,52 +3,30 @@ import path from "path";
 import { SecretConfig } from "../types";
 import { fromYaml } from "../utils/yaml";
 
-const concatPath = (p: string) => (dir: string) => path.join(p, dir);
-
-const sortDirFiles = async (
-  prom: Promise<[string[], string[]]>,
-  cur: string
-): Promise<[string[], string[]]> => {
-  const acc = await prom;
-
-  const stat = await fs.lstat(cur);
-  if (stat.isDirectory()) {
-    return [[...acc[0], cur], acc[1]];
-  }
-
-  if (cur.match(/\.ya?ml$/)) {
-    return [acc[0], [...acc[1], cur]];
-  }
-
-  return acc;
-};
-
-const walker = async (dir: string): Promise<string[]> => {
-  const currentDir = await fs.readdir(dir);
-  const [dirs, files] = await currentDir
-    .map(concatPath(dir))
-    .reduce(sortDirFiles, Promise.resolve([[], []]));
-  const children = (await Promise.all(dirs.map(walker))).flat().filter(Boolean);
-
-  return files.concat(children);
-};
-
 const readFile = (p: string) => fs.readFile(p, "utf8");
+
+async function* readFiles(dir: string): AsyncIterable<string> {
+  const dirents = await fs.readdir(dir, { withFileTypes: true });
+  for (const dirent of dirents) {
+    const res = path.resolve(dir, dirent.name);
+    if (dirent.isDirectory()) {
+      yield* readFiles(res);
+    } else if (res.match(/\.ya?ml$/)) {
+      yield res;
+    }
+  }
+}
 
 export const loadConfigurations = async (
   inputPath: string
 ): Promise<[string, SecretConfig][]> => {
-  const fullInputPath = path.resolve(process.cwd(), inputPath);
-  const paths = await walker(fullInputPath);
-  const configs = await Promise.all(
-    paths.map(
-      async (pathName): Promise<[string, SecretConfig]> => {
-        const data = await readFile(pathName);
+  const rootPath = path.resolve(process.cwd(), inputPath);
+  const files: [string, SecretConfig][] = [];
 
-        return [pathName.substr(fullInputPath.length), fromYaml(data)];
-      }
-    )
-  );
+  for await (const file of readFiles(rootPath)) {
+    const data = await readFile(file);
+    files.push([file.substr(rootPath.length), fromYaml(data)]);
+  }
 
-  return configs;
+  return files;
 };
