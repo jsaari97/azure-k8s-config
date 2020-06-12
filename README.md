@@ -11,7 +11,7 @@ Compatible with environments that use environment variables (eg. Node.js).
 
 ## Usage
 
-There are two ways to use this library, either programmatically or using the CLI tool.
+There are two ways to use this library, either by using the CLI tool or programmatically.
 
 ### CLI
 
@@ -41,14 +41,13 @@ az appconfig create --name <app-configuration-resource-name> \
 	--location eastus
 ```
 
-Create Key Vault Resource:
+Create Key Vault Resource: *(optional)*
 
 ```bash
 az keyvault create --name <key-vault-resource-name> \
 	--resource-group <resource-group-name> \
 	--location eastus
 ```
-
 
 Create Service Principal:
 
@@ -68,19 +67,21 @@ which outputs:
 }
 ```
 
-Next create your .env file.
+Next create an .env file in the project root directory.
 
 Your `.env` file should look like this:
 
 ```
-AZURE_KEYVAULT_NAME="<key-vault-resource-name>"
 AZURE_APP_CONFIG_NAME="<app-configuration-resource-name>"
 AZURE_TENANT_ID="<tenant>"
 AZURE_CLIENT_ID="<appId>"
 AZURE_CLIENT_SECRET="<password>"
+
+# optional
+AZURE_KEYVAULT_NAME="<key-vault-resource-name>"
 ```
 
-Set Azure Key Vault permissions for the Service Principal
+If you're using Key Vault, you need to add Key Vault permissions for the Service Principal account
 
 ```bash
 az keyvault set-policy --name <key-vault-resource-name> \
@@ -95,6 +96,35 @@ az role assignment create --role "App Configuration Data Reader" \
 	--assignee <appId> \
 	--resource-group <resource-group-name>
 ```
+
+### Event Grid *(optional)*
+
+This step is optional but highly recommended for keeping Azure App Configuration values synced with the deployed Kubernetes Secrets. 
+
+Azure Event Grid can be used to listen to changes in your App Configuration, and trigger events based on that, eg. a webhook to trigger your Continuous Deployment (CD) tool.
+
+Register Azure Event Grid if you haven't already
+
+```bash
+az provider register -n Microsoft.EventGrid
+```
+
+The registration might take a while, you can check the status with the following command
+
+```bash
+az provider show -n Microsoft.EventGrid --query "registrationState"
+```
+
+After the registration is finished you'll be able to create subscriptions to your Event Grid.
+The following example subscribes to the App Configuration resource and hits the given endpoint every time a key is added, updated or removed.
+
+```bash
+az eventgrid event-subscription create \
+  --source-resource-id <app-configuration-resource-name> \
+  --name <event-subscription-name> \
+  --endpoint <webhook-endpoint>
+```
+
 
 ## License
 
