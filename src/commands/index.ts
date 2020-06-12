@@ -2,9 +2,9 @@ import { Command, flags } from "@oclif/command";
 import cli from "cli-ux";
 import generate from "..";
 
-class AzureAppConfigK8sCommand extends Command {
+class AzureK8sConfigCommand extends Command {
   static description =
-    "Generate Kubernetes Secrets from Azure App Configuration and Key Vault keys";
+    "Generate Kubernetes Secrets from Azure App Configuration and Key Vault data";
 
   static flags = {
     version: flags.version({ char: "v" }),
@@ -17,7 +17,7 @@ class AzureAppConfigK8sCommand extends Command {
   ];
 
   async run() {
-    const { args } = this.parse(AzureAppConfigK8sCommand);
+    const { args } = this.parse(AzureK8sConfigCommand);
 
     cli.action.start("Generating k8s secrets");
 
@@ -30,4 +30,4 @@ class AzureAppConfigK8sCommand extends Command {
   }
 }
 
-export = AzureAppConfigK8sCommand;
+export = AzureK8sConfigCommand;
