@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: graphql-backend-config
-  namespace: staging
-type: Opaque
-data:
-  JWT_SECRET: graphql-backend/staging/jwt-secret
-  BASE_URL: graphql-backend/staging/base-url
