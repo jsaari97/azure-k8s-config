@@ -24,6 +24,10 @@ export const getValue = async (
       return Promise.resolve(value);
     }
 
+    if (!vaultClient) {
+      return Promise.reject();
+    }
+
     const ref: KeyVaultRef = JSON.parse(value);
 
     // Fetch secret value from Key Vault
