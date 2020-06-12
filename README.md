@@ -5,31 +5,35 @@ Node.js based tool for generating Kubernetes Secret Configurations from Azure Ap
 Compatible with environments that use environment variables (eg. Node.js).
 
 ### Services used:
-- Azure App Configuration
-- Azure Key Vault _(optional)_
-- Azure Event Grid _(optional)_
+
+- [Azure App Configuration](https://azure.microsoft.com/en-gb/services/app-configuration/)
+- [Azure Key Vault](https://azure.microsoft.com/en-gb/services/key-vault/) _(optional)_
+- [Azure Event Grid](https://azure.microsoft.com/en-gb/services/event-grid/) _(optional)_
 
 ## Usage
 
 There are two ways to use this library, either by using the CLI tool or programmatically.
 
-### CLI
+#### Using the Command Line
 
 ```bash
 $ azure-k8s-config <input-dir> <output-dir>
 ```
 
-### Node.js script
+#### Using in a node script
+
 ```js
-const generateSecrets = require('azure-k8s-config');
+const generateSecrets = require("azure-k8s-config");
 
 generateSecrets({
-	input: '<input-dir>',
-	output: '<output-dir>'	
+  input: "<input-dir>",
+  output: "<output-dir>",
 });
 ```
 
 ## Setup Azure
+
+This workflow requires you to setup a feq Azure resources to get everything working.
 
 ### Create Service Principal
 
@@ -41,7 +45,7 @@ az appconfig create --name <app-configuration-resource-name> \
 	--location eastus
 ```
 
-Create Key Vault Resource: *(optional)*
+Create Key Vault Resource: _(optional)_
 
 ```bash
 az keyvault create --name <key-vault-resource-name> \
@@ -97,9 +101,9 @@ az role assignment create --role "App Configuration Data Reader" \
 	--resource-group <resource-group-name>
 ```
 
-### Event Grid *(optional)*
+### Event Grid _(optional)_
 
-This step is optional but highly recommended for keeping Azure App Configuration values synced with the deployed Kubernetes Secrets. 
+This step is optional but highly recommended for keeping Azure App Configuration values synced with the deployed Kubernetes Secrets.
 
 Azure Event Grid can be used to listen to changes in your App Configuration, and trigger events based on that, eg. a webhook to trigger your Continuous Deployment (CD) tool.
 
@@ -124,7 +128,6 @@ az eventgrid event-subscription create \
   --name <event-subscription-name> \
   --endpoint <webhook-endpoint>
 ```
-
 
 ## License
 
