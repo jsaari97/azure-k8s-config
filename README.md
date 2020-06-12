@@ -1,6 +1,8 @@
 # App Configuration + Key Vault
 
-Node.js based tool for generating Kubernetes Secret Configurations from Azure App Configuration and Key Vault entries. Compatible with enviroments that use environment variables (eg. Node.js).
+Node.js based tool for generating Kubernetes Secret Configurations from Azure App Configuration and Azure Key Vault data.
+
+Compatible with environments that use environment variables (eg. Node.js).
 
 ### Services used:
 - Azure App Configuration
@@ -17,7 +19,7 @@ There are two ways to use this library, either programmatically or using the CLI
 $ azure-k8s-config <input-dir> <output-dir>
 ```
 
-### Programmatically
+### Node.js script
 ```js
 const generateSecrets = require('azure-k8s-config');
 
@@ -93,3 +95,7 @@ az role assignment create --role "App Configuration Data Reader" \
 	--assignee <appId> \
 	--resource-group <resource-group-name>
 ```
+
+## License
+
+MIT 2020 - Jim Saari

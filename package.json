@@ -1,6 +1,6 @@
 {
   "name": "azure-k8s-config",
-  "description": "Generate Kubernetes Secret configuration files from Azure App Configuration and Key Vault data.",
+  "description": "Generate Kubernetes Secret configuration files from Azure App Configuration and Azure Key Vault data.",
   "version": "0.1.0",
   "author": "Jim Saari",
   "bin": {
