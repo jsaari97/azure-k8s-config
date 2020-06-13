@@ -31,10 +31,10 @@ describe("Azure: Authentication", () => {
   it("should not fail if only missing AZURE_KEYVAULT_NAME", async () => {
     delete process.env.AZURE_KEYVAULT_NAME;
 
-    const m = await import("./auth");
+    const auth = await import("./auth");
 
-    expect(m.appClient).toBeTruthy();
-    expect(m.appClient).toEqual(appClient);
-    expect(m.vaultClient).toEqual(null);
+    expect(auth.appClient).toBeTruthy();
+    expect(auth.appClient).toEqual(appClient);
+    expect(auth.vaultClient).toEqual(null);
   });
 });
