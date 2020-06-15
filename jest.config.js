@@ -3,4 +3,5 @@ module.exports = {
   testEnvironment: "node",
   testTimeout: 10 * 1000,
   setupFiles: ["<rootDir>/jest/setup-env-vars.js"],
+  testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
 };
