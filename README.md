@@ -10,6 +10,12 @@ Compatible with environments that use environment variables (eg. Node.js).
 - [Azure Key Vault](https://azure.microsoft.com/en-gb/services/key-vault/) _(optional)_
 - [Azure Event Grid](https://azure.microsoft.com/en-gb/services/event-grid/) _(optional)_
 
+## Install
+
+```bash
+npm install --save-dev azure-k8s-config
+```
+
 ## Usage
 
 There are two ways to use this library, either by using the CLI tool or programmatically.
