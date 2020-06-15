@@ -9,6 +9,7 @@ class AzureK8sConfigCommand extends Command {
   static flags = {
     version: flags.version({ char: "v" }),
     help: flags.help({ char: "h" }),
+    recursive: flags.boolean({ char: "R" }),
   };
 
   static args = [
@@ -17,13 +18,14 @@ class AzureK8sConfigCommand extends Command {
   ];
 
   async run() {
-    const { args } = this.parse(AzureK8sConfigCommand);
+    const { args, flags } = this.parse(AzureK8sConfigCommand);
 
     cli.action.start("Generating k8s secrets");
 
     await generate({
       input: args.input,
       output: args.output,
+      recursive: flags.recursive,
     });
 
     cli.action.stop();
