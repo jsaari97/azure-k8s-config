@@ -62,7 +62,8 @@
     "build": "tsc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "jest",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "type-check": "tsc --noEmit"
   },
   "types": "lib/index.d.ts"
 }

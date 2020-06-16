@@ -2,8 +2,9 @@ import { loadConfigurations } from "./fs/load";
 import { parseConfig } from "./app-config";
 import { saveConfigurations } from "./fs/save";
 import { SecretConfig, GenerateOptions } from "./types";
+import { toYaml } from "./utils/yaml";
 
-export default async (options: GenerateOptions) => {
+export default async (options: GenerateOptions): Promise<string[]> => {
   try {
     const configs = await loadConfigurations(
       options.input,
@@ -27,7 +28,16 @@ export default async (options: GenerateOptions) => {
       )
     );
 
-    await saveConfigurations(options.output, parsed);
+    const result = parsed.map(([pathName, config]): [string, string] => [
+      pathName,
+      toYaml(config),
+    ]);
+
+    if (options.output) {
+      await saveConfigurations(options.output, result);
+    }
+
+    return Promise.resolve(result.map(([, config]) => config));
   } catch (error) {
     return Promise.reject(error);
   }

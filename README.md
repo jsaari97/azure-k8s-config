@@ -74,8 +74,7 @@ const generateSecrets = require("azure-k8s-config");
 
 generateSecrets({
   input: "<input-dir>",
-  output: "<output-dir>",
-});
+}).then((configs) => { /* ... */ });
 ```
 
 ## API

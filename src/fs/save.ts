@@ -1,7 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { SecretConfig } from "../types";
-import { toYaml } from "../utils/yaml";
 
 const makeDir = async (pathName: string): Promise<void> => {
   try {
@@ -12,11 +10,10 @@ const makeDir = async (pathName: string): Promise<void> => {
   }
 };
 
-const save = async (pathName: string, config: SecretConfig): Promise<void> => {
+const save = async (pathName: string, config: string): Promise<void> => {
   try {
     await makeDir(pathName);
-    const data = toYaml(config);
-    await fs.writeFile(pathName, data, "utf8");
+    await fs.writeFile(pathName, config, "utf8");
   } catch (error) {
     Promise.reject(error);
   }
@@ -24,7 +21,7 @@ const save = async (pathName: string, config: SecretConfig): Promise<void> => {
 
 export const saveConfigurations = async (
   outputPath: string,
-  configs: [string, SecretConfig][]
+  configs: [string, string][]
 ): Promise<void> => {
   await Promise.all(
     configs.map(async ([pathName, config]) => {
