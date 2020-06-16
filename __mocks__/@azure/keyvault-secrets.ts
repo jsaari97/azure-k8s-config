@@ -1,7 +1,7 @@
 export class SecretClient {
-  getSecret() {
-    return {
+  async getSecret() {
+    return Promise.resolve({
       value: "my-secret-value",
-    };
+    });
   }
 }
