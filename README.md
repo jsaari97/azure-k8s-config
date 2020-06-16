@@ -1,8 +1,16 @@
-# App Configuration + Key Vault
+# App Configuration + Key Vault Kubernetes Secrets
 
 Node.js based tool for generating Kubernetes Secret Configurations from Azure App Configuration and Azure Key Vault data.
 
 Compatible with environments that use environment variables (eg. Node.js).
+
+_Note:_ This package creates **opaque** Kubernetes secrets, which are base64 encoded and not securely encrypted or secret by design.
+
+## Features
+
+- Version control your configurations without commiting sensitive data.
+- Kubernetes vendor agnostic.
+- Written in TypeScript, typings included.
 
 ### Services used:
 
@@ -10,23 +18,56 @@ Compatible with environments that use environment variables (eg. Node.js).
 - [Azure Key Vault](https://azure.microsoft.com/en-gb/services/key-vault/) _(optional)_
 - [Azure Event Grid](https://azure.microsoft.com/en-gb/services/event-grid/) _(optional)_
 
-## Install
+## How it works
 
-```bash
-npm install --save-dev azure-k8s-config
+Instead of directly entering the data values in your Secrets, you enter the key of your wanted App Configuration key-value pair. The application then fetches the value associated with the key,
+base64 encodes it and returns the ready to use configuration.
+
+### Example
+
+An example secret configuration.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secrets
+  namespace: production
+type: Opaque
+data:
+  JWT_SECRET: backend-service/production/jwt-secret
+  BASE_URL: backend-service/production/base-url
+```
+
+returns:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secrets
+  namespace: production
+type: Opaque
+data:
+  JWT_SECRET: c2llbmkgZWkgb2xlIGthc3Zp
+  BASE_URL: aHR0cHM6Ly9leGFtcGxlLmFwcA==
 ```
 
 ## Usage
 
-There are two ways to use this library, either by using the CLI tool or programmatically.
+There are two ways to use this library, either the Command-Line or programmatically in a Node script.
 
-#### Using the Command Line
+#### Using the Command Line (npx)
 
 ```bash
-$ azure-k8s-config <input-dir> <output-dir>
+npx azure-k8s-config <input-dir> <output-dir> [flags]
 ```
 
 #### Using in a node script
+
+```bash
+npm install azure-k8s-config
+```
 
 ```js
 const generateSecrets = require("azure-k8s-config");
@@ -37,9 +78,13 @@ generateSecrets({
 });
 ```
 
-## Setup Azure
+## API
 
-This workflow requires you to setup a feq Azure resources to get everything working.
+> Add API documentation
+
+## Setting up Azure
+
+This workflow requires you to setup a few Azure resources to get everything working correctly. This package only requires App Configuration and can be used without the Azure Key Vault service.
 
 ### Create Service Principal
 
@@ -86,12 +131,10 @@ AZURE_APP_CONFIG_NAME="<app-configuration-resource-name>"
 AZURE_TENANT_ID="<tenant>"
 AZURE_CLIENT_ID="<appId>"
 AZURE_CLIENT_SECRET="<password>"
-
-# optional
-AZURE_KEYVAULT_NAME="<key-vault-resource-name>"
+AZURE_KEYVAULT_NAME="<key-vault-resource-name>" # optional
 ```
 
-If you're using Key Vault, you need to add Key Vault permissions for the Service Principal account
+If you're using Key Vault, you also need to add Key Vault permissions for the Service Principal account
 
 ```bash
 az keyvault set-policy --name <key-vault-resource-name> \
@@ -107,11 +150,11 @@ az role assignment create --role "App Configuration Data Reader" \
 	--resource-group <resource-group-name>
 ```
 
-### Event Grid _(optional)_
+### Setting up Azure Event Grid _(optional)_
 
-This step is optional but highly recommended for keeping Azure App Configuration values synced with the deployed Kubernetes Secrets.
+This step is optional but recommended if you want to keep your Kubernetes Secret configurations synced with Azure App Configuration.
 
-Azure Event Grid can be used to listen to changes in your App Configuration, and trigger events based on that, eg. a webhook to trigger your Continuous Deployment (CD) tool.
+Azure Event Grid can be used to listen to App Configuration changes and trigger events based on that, eg. a webhook to trigger your Continuous Deployment (CD) tool.
 
 Register Azure Event Grid if you haven't already
 
@@ -134,6 +177,10 @@ az eventgrid event-subscription create \
   --name <event-subscription-name> \
   --endpoint <webhook-endpoint>
 ```
+
+## Development
+
+> Add dev setup instructions
 
 ## License
 
