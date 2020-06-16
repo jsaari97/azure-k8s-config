@@ -44,6 +44,13 @@
     "/bin",
     "/lib"
   ],
+  "keywords": [
+    "azure",
+    "kubernetes",
+    "secrets",
+    "config",
+    "k8s"
+  ],
   "homepage": "https://github.com/jsaari97/azure-k8s-config",
   "license": "MIT",
   "main": "lib/index.js",
