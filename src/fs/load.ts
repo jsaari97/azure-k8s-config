@@ -24,13 +24,17 @@ export const loadConfigurations = async (
   inputPath: string,
   recursive: boolean
 ): Promise<[string, SecretConfig][]> => {
-  const rootPath = path.resolve(process.cwd(), inputPath);
-  const files: [string, SecretConfig][] = [];
+  try {
+    const rootPath = path.resolve(process.cwd(), inputPath);
+    const files: [string, SecretConfig][] = [];
 
-  for await (const file of readFiles(rootPath, recursive)) {
-    const data = await readFile(file);
-    files.push([file.substr(rootPath.length), fromYaml(data)]);
+    for await (const file of readFiles(rootPath, recursive)) {
+      const data = await readFile(file);
+      files.push([file.substr(rootPath.length), fromYaml(data)]);
+    }
+
+    return files;
+  } catch (error) {
+    return Promise.reject(error);
   }
-
-  return files;
 };
