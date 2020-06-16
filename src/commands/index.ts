@@ -10,6 +10,7 @@ class AzureK8sConfigCommand extends Command {
     version: flags.version({ char: "v" }),
     help: flags.help({ char: "h" }),
     recursive: flags.boolean({ char: "R" }),
+    force: flags.boolean({ char: "f" }),
   };
 
   static args = [
@@ -22,13 +23,20 @@ class AzureK8sConfigCommand extends Command {
 
     cli.action.start("Generating k8s secrets");
 
-    await generate({
-      input: args.input,
-      output: args.output,
-      recursive: flags.recursive,
-    });
+    try {
+      await generate({
+        input: args.input,
+        output: args.output,
+        recursive: flags.recursive,
+        force: flags.force,
+      });
 
-    cli.action.stop();
+      cli.action.stop();
+    } catch (error) {
+      cli.action.stop("failed");
+
+      cli.error(error.toString().replace("Error: ", ""));
+    }
   }
 }
 

@@ -13,11 +13,20 @@ export default async (options: GenerateOptions) => {
     const parsed = await Promise.all(
       configs.map(
         async ([pathName, config]): Promise<[string, SecretConfig]> => {
-          const parsedConfig = await parseConfig(config);
-          return [pathName, parsedConfig];
+          try {
+            const parsedConfig = await parseConfig(
+              config,
+              Boolean(options.force)
+            );
+
+            return [pathName, parsedConfig];
+          } catch (error) {
+            return Promise.reject(error);
+          }
         }
       )
     );
+
     await saveConfigurations(options.output, parsed);
   } catch (error) {
     return Promise.reject(error);

@@ -14,4 +14,5 @@ export interface GenerateOptions {
   input: string;
   output: string;
   recursive?: boolean;
+  force?: boolean;
 }
