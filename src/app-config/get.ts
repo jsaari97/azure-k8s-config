@@ -16,7 +16,9 @@ export const getValue = async (
     });
 
     if (!value) {
-      return Promise.reject();
+      return Promise.reject(
+        new Error("Failed to retrieve App Configuration value")
+      );
     }
 
     // Check if key value is an Key Vault reference
@@ -25,7 +27,7 @@ export const getValue = async (
     }
 
     if (!vaultClient) {
-      return Promise.reject();
+      return Promise.reject(new Error("Key Vault is not set up"));
     }
 
     const ref: KeyVaultRef = JSON.parse(value);
@@ -37,11 +39,20 @@ export const getValue = async (
     );
 
     if (!secret.value) {
-      return Promise.reject();
+      return Promise.reject(new Error("Failed to retrieve Key Vault value"));
     }
 
     return Promise.resolve(secret.value);
   } catch (error) {
+    if (typeof error === "object" && error.statusCode) {
+      switch (error.statusCode) {
+        case 404:
+          return Promise.reject(new Error(`The key "${key}" was not found`));
+        case 503:
+          return Promise.reject(new Error(`Unauthorized access to App Config`));
+      }
+    }
+
     return Promise.reject(error);
   }
 };
