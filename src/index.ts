@@ -2,7 +2,7 @@ import { loadConfigurations } from "./fs/load";
 import { parseConfig } from "./app-config";
 import { saveConfigurations } from "./fs/save";
 import { SecretConfig, GenerateOptions } from "./types";
-import { toYaml } from "./utils/yaml";
+import { formatYaml } from "./utils/yaml";
 
 export default async (options: GenerateOptions): Promise<string[]> => {
   try {
@@ -30,7 +30,7 @@ export default async (options: GenerateOptions): Promise<string[]> => {
 
     const result = parsed.map(([pathName, config]): [string, string] => [
       pathName,
-      toYaml(config),
+      formatYaml(config),
     ]);
 
     if (options.output) {

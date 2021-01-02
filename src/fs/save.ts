@@ -23,6 +23,15 @@ export const saveConfigurations = async (
   outputPath: string,
   configs: [string, string][]
 ): Promise<void> => {
+  // Check if single file
+  if (configs.length === 1 && path.extname(outputPath)) {
+    const fullPath = path.join(process.cwd(), outputPath);
+
+    await save(fullPath, configs[0][1]);
+
+    return;
+  }
+
   await Promise.all(
     configs.map(async ([pathName, config]) => {
       const fullPath = path.join(process.cwd(), outputPath, pathName);

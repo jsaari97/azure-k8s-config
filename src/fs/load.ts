@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { SecretConfig } from "../types";
-import { fromYaml } from "../utils/yaml";
+import { parseYaml } from "../utils/yaml";
 
 const readFile = (p: string) => fs.readFile(p, "utf8");
 
@@ -28,9 +28,20 @@ export const loadConfigurations = async (
     const rootPath = path.resolve(process.cwd(), inputPath);
     const files: [string, SecretConfig][] = [];
 
-    for await (const file of readFiles(rootPath, recursive)) {
-      const data = await readFile(file);
-      files.push([file.substr(rootPath.length), fromYaml(data)]);
+    // check if single file
+    if (path.extname(rootPath) && rootPath.match(/\.ya?ml$/)) {
+      const data = await readFile(rootPath);
+      files.push([
+        inputPath.substr(inputPath.lastIndexOf("/")),
+        parseYaml(data),
+      ]);
+
+      return files;
+    }
+
+    for await (const filePath of readFiles(rootPath, recursive)) {
+      const data = await readFile(filePath);
+      files.push([filePath.substr(rootPath.length), parseYaml(data)]);
     }
 
     return files;

@@ -20,14 +20,6 @@ describe("Azure: Authentication", () => {
     expect(value).toEqual("my-value");
   });
 
-  it("should fail if missing AZURE_APP_CONFIG_NAME", async () => {
-    delete process.env.AZURE_APP_CONFIG_NAME;
-
-    expect(import("./auth")).rejects.toThrow(
-      "AZURE_APP_CONFIG_NAME variable missing!"
-    );
-  });
-
   it("should not fail if only missing AZURE_KEYVAULT_NAME", async () => {
     delete process.env.AZURE_KEYVAULT_NAME;
 
