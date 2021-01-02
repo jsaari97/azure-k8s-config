@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-config
+  namespace: development
+type: Opaque
+data:
+  BASE_URL: backend/development/base-url
+  JWT_SECRET: backend/development/jwt-secret
+  NOT_FOUND: my opaque value
