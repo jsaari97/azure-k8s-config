@@ -7,7 +7,7 @@ export interface SecretConfig {
     [key: string]: string | number;
   };
   type: "Opaque";
-  data: { [key: string]: string };
+  data: Record<string, string>;
 }
 
 export interface GenerateOptions {

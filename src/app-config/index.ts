@@ -1,6 +1,5 @@
 import { SecretConfig } from "../types";
 import { getValue } from "./get";
-import { fromPairs } from "lodash";
 
 export const readKey = (force: boolean) => async ([key, value]: [
   string,
@@ -33,7 +32,10 @@ export const parseConfig = async (
       Object.entries(config.data).map(handleKey)
     );
 
-    const data: SecretConfig["data"] = fromPairs(dataPairs);
+    const data = dataPairs.reduce(
+      (acc, [key, value]): SecretConfig["data"] => ({ ...acc, [key]: value }),
+      {}
+    );
 
     return {
       ...config,
