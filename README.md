@@ -4,12 +4,13 @@ Node.js based tool for generating Kubernetes Secret Configurations from Azure Ap
 
 Compatible with environments that use environment variables (eg. Node.js).
 
-_Note:_ This package creates **opaque** Kubernetes secrets, which are base64 encoded and not securely encrypted or secret by design.
+_Note:_ This package creates **opaque** Kubernetes secrets, which are base64 encoded and not securely encrypted.
 
 ## Features
 
 - Version control your configurations without commiting sensitive data.
 - Kubernetes vendor agnostic.
+- Mix App Configuration keys with local variables.
 - Written in TypeScript, typings included.
 
 ### Services used:
@@ -60,7 +61,7 @@ There are two ways to use this library, either the Command-Line or programmatica
 #### Using the Command Line (npx)
 
 ```bash
-npx azure-k8s-config <input-dir> <output-dir> [flags]
+npx azure-k8s-config input/ output/
 ```
 
 #### Using in a node script
@@ -79,7 +80,14 @@ generateSecrets({
 
 ## API
 
-> Add API documentation
+```bash
+azure-k8s-config <INPUT-DIRECTORY> <OUPUT-DIRECTORY> [FLAGS]
+```
+
+### Flags
+
+- `--force` (_alias_ `-f`, _default:_ `false`) – allow usage of locally defined variables not defined in App Configuration.
+- `--recursive` (_alias_ `-r`, _default:_ `false`) – Recursively search through subdirectories for kubernetes configurations
 
 ## Setting up Azure
 
@@ -133,6 +141,14 @@ AZURE_CLIENT_SECRET="<password>"
 AZURE_KEYVAULT_NAME="<key-vault-resource-name>" # optional
 ```
 
+_Note_
+
+Make sure to save your service principal password, as you cannot retrieve it again after this step. If you've lost your password you need to generate a new password using the following command:
+
+```
+ az ad sp credential reset --name <service principal's appId>
+```
+
 If you're using Key Vault, you also need to add Key Vault permissions for the Service Principal account
 
 ```bash
@@ -183,4 +199,4 @@ az eventgrid event-subscription create \
 
 ## License
 
-MIT 2020 - Jim Saari
+MIT 2021 - Jim Saari
