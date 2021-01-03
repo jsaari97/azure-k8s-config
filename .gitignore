@@ -20,7 +20,6 @@
 /.nyc_output
 /dist
 /lib
-/package-lock.json
 /tmp
 coverage
 lerna-debug.log*
@@ -35,3 +34,4 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
