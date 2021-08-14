@@ -29,10 +29,12 @@ const args = yargs
       type: "boolean",
       default: false,
     },
-  }).argv;
+  });
 
 export async function run(): Promise<void> {
   try {
+    const { input, output, recursive, force } = await args.argv;
+
     spinner = ora("Validating environment variables").start();
 
     validateEnvVariables();
@@ -42,10 +44,10 @@ export async function run(): Promise<void> {
     spinner = ora("Generating Kubernetes configurations").start();
 
     await generate({
-      input: args.input,
-      output: args.output,
-      recursive: !!args.recursive,
-      force: !!args.force,
+      input,
+      output,
+      recursive,
+      force,
     });
 
     spinner.succeed();
